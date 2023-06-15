@@ -18,7 +18,19 @@ export const boardSlice = createSlice({
   },
 })
 
+export const showModal = createSlice({
+  name: 'modal',
+  initialState: '',
+  reducers: {
+    isShowModal: (state, action) => {
+        const {payload} = action;
+      return [...state, payload];
+    }
+  },
+})
+
 // Action creators are generated for each case reducer function
 
 export default boardSlice.reducer
 export const {addBoard, deleteBoard} = boardSlice.actions;
+export const {isShowModal} = showModal.actions;
