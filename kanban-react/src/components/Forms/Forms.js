@@ -3,10 +3,11 @@ import "./Forms.scss";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addBoard } from "../../Content/board/boardSlice";
+import { addBoard,deleteBoard } from "../../Content/board/boardSlice";
 
 function Forms() {
   const { showModal } = useSelector((state) => state);
+  const boards = useSelector(state => state.boards);
   const closeRef = useRef();
 
   const [name, setName] = useState("");
@@ -18,6 +19,14 @@ function Forms() {
       closeRef.current.click();
     }
   };
+
+  const removeBoard = () => {
+    if (name !== "") {
+      dispatch(deleteBoard(name));
+      setName("");
+      closeRef.current.click();
+    }
+  }
 
   useEffect(() => {}, []);
   return (
@@ -67,26 +76,20 @@ function Forms() {
               <h1 className="font-bold text-2xl">Delete Your board</h1>
               <p className="py-4">This modal works with a hidden checkbox!</p>
               <div className="form-control w-full max-w-xs">
-                <select className="select select-bordered">
-                  <option disabled selected>
+                <select className="select select-bordered" defaultValue={'DEFAULT'} onChange={(event)=>{setName(event?.target.value)}}>
+                  <option value="DEFAULT" disabled>
                     Pick one
                   </option>
-                  <option>Star Wars</option>
-                  <option>Harry Potter</option>
-                  <option>Lord of the Rings</option>
-                  <option>Planet of the Apes</option>
-                  <option>Star Trek</option>
+                  {boards.map((season,index) => (
+                    <option key={index}>{season}</option>
+                  ))}
                 </select>
-                <label className="label">
-                  <span className="label-text-alt">Alt label</span>
-                  <span className="label-text-alt">Alt label</span>
-                </label>
               </div>
               <div className="modal-action flex justify-between">
                 <label htmlFor="my_modal_6" className="btn">
                   Close!
                 </label>
-                <label className="btn bg-slate-400" onClick={insertBoard}>
+                <label className="btn bg-slate-400" onClick={removeBoard}>
                   Submit
                 </label>
               </div>

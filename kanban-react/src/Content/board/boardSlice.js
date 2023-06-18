@@ -10,10 +10,13 @@ export const boardSlice = createSlice({
         const {payload} = action;
       return [...state, payload];
     },
-    deleteBoard: (state, action) => {
+    deleteBoard:(state, action) => {
         const {payload} = action;
-
-        return state.filter((it, index) => index !== payload)
+        const i= state.indexOf(payload);
+        console.log('mvkfmk');
+        state = state.splice(i,1)
+        console.log('rrrrrrr');
+        return state
     }
   },
 })
