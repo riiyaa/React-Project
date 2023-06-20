@@ -19,6 +19,13 @@ export const boardSlice = createSlice({
         // }
         localStorage.setItem('boards',JSON.stringify(state.filter((elem ,ind) => elem !== payload)))
         return state.filter((elem ,ind) => elem !== payload)
+    },
+    selectedBoard:(state,action) =>{
+      const {payload} = action;
+      console.log(payload);
+      const result = payload.array.find((it,ind)=>ind==payload.index)
+      console.log(result);
+      return result
     }
   },
 })
@@ -28,4 +35,4 @@ export const boardSlice = createSlice({
 // Action creators are generated for each case reducer function
 
 export default boardSlice.reducer
-export const {addBoard, deleteBoard} = boardSlice.actions;
+export const {addBoard, deleteBoard,selectedBoard} = boardSlice.actions;

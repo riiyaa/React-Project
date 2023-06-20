@@ -1,10 +1,19 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import "./Sidebar.scss"
 import React from 'react'
 import logo from '../../assets/logo-mobile.svg'
+import { VscExtensions } from "react-icons/vsc";
+import { selectedBoard } from "../../Content/board/boardSlice";
 
 function Sidebar() {
+
+  const dispatch = useDispatch(); 
+
   const boards = useSelector(state => state.boards);
+  const selectItem = (i) =>{
+    dispatch(selectedBoard({index:i,array:boards}))
+  }
+
   return (
     <>
     <div className="w-1/4 rounded-tr-xl rounded-br-xl h-screen">
@@ -15,7 +24,10 @@ function Sidebar() {
         </div>
         <h2 className="font-bold py-4 px-8"> ALL BOARDS </h2>
           {boards.map((it, index) => {
-            return <div key={index} className="cursor-pointer py-2 pl-8 pr-2 my-2 bg-purple-400 background1 border-radius20"><h2 className="w-full h-6 text-ellipsis overflow-hidden" key={index} >{it}</h2></div>
+            return <div onClick={()=>selectItem(index)} key={index} className="cursor-pointer py-2 pl-8 pr-2 mr-5 my-2 bg-purple-400 background1 border-radius20 flex items-center">
+                <div className="px-4 py-1"><VscExtensions style={{ fontSize: "20px", color: "grey" }} className="svg-path fill-gray-600" /></div>
+                <div><h2 className="w-20 h-6 text-ellipsis overflow-hidden text-white font-bold" key={index} >{it}</h2></div>
+              </div>
           })}
       </div>  
     </div> 

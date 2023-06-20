@@ -13,7 +13,7 @@ function Forms() {
 
   useEffect(() => {
     setName('')
-    console.log(name);
+    // console.log(name);
   }, []);
 
   const [name, setName] = useState("");
@@ -35,7 +35,7 @@ function Forms() {
   }
 
   useEffect(() => {
-    if(showModal=='add'){
+    if(showModal==='add'){
       setName('');
     }
   }, [showModal])
