@@ -4,18 +4,24 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addBoard,deleteBoard } from "../../Content/board/boardSlice";
+import { isShowModal } from "../../Content/modal/modalSlice";
 
 function Forms() {
-  const { showModal } = useSelector((state) => state);
+  const  showModal  = useSelector((state) => state.showModal);
   const boards = useSelector(state => state.boards);
   const closeRef = useRef();
 
+  useEffect(() => {
+    setName('')
+    console.log(name);
+  }, []);
+
   const [name, setName] = useState("");
   const dispatch = useDispatch();
-  const insertBoard = () => {
+  const insertBoard = (event) => {
     if (name !== "") {
       dispatch(addBoard(name));
-      setName("");
+      dispatch(isShowModal(''));
       closeRef.current.click();
     }
   };
@@ -23,12 +29,18 @@ function Forms() {
   const removeBoard = () => {
     if (name !== "") {
       dispatch(deleteBoard(name));
-      setName("");
+      dispatch(isShowModal(''));
       closeRef.current.click();
     }
   }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if(showModal=='add'){
+      setName('');
+    }
+  }, [showModal])
+  
+
   return (
     <>
       {showModal === "add" && (
@@ -47,6 +59,7 @@ function Forms() {
                 type="text"
                 placeholder="Board Name"
                 className="input border-slate-500 w-full max-w-xs"
+                value={name}
                 onChange={(e) => {
                   setName(e?.target.value);
                 }}
@@ -55,7 +68,7 @@ function Forms() {
                 <label htmlFor="my_modal_6" className="btn">
                   Close!
                 </label>
-                <label className="btn bg-slate-400" onClick={insertBoard}>
+                <label className="btn bg-slate-400" onClick={(event)=>insertBoard(event)}>
                   Submit
                 </label>
               </div>

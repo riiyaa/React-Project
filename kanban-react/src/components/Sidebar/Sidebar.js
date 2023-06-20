@@ -5,7 +5,6 @@ import logo from '../../assets/logo-mobile.svg'
 
 function Sidebar() {
   const boards = useSelector(state => state.boards);
-  console.log(boards);
   return (
     <>
     <div className="w-1/4 rounded-tr-xl rounded-br-xl h-screen">
