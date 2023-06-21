@@ -1,5 +1,13 @@
 .background1{
+    color: black;
+    background:none;
+    border-radius: 0 40px 40px 0;
+}
+.background1:hover{
+    color: white;
+    background-color: var(--hoverPrimary);
+}
+.background1.active{
     color: white;
     background-color:var(--primary);
-    border-radius: 0 40px 40px 0;
 }
