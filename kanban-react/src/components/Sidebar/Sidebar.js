@@ -3,7 +3,7 @@ import "./Sidebar.scss"
 import React from 'react'
 import logo from '../../assets/logo-mobile.svg'
 import { VscExtensions } from "react-icons/vsc";
-import { selectedBoard } from "../../Content/board/boardSlice";
+import { selectedBoard } from "../../Content/singleBoard/singleBoardSlice";
 
 function Sidebar() {
 

@@ -19,13 +19,6 @@ export const boardSlice = createSlice({
         // }
         localStorage.setItem('boards',JSON.stringify(state.filter((elem ,ind) => elem !== payload)))
         return state.filter((elem ,ind) => elem !== payload)
-    },
-    selectedBoard:(state,action) =>{
-      const {payload} = action;
-      console.log(payload);
-      const result = payload.array.find((it,ind)=>ind==payload.index)
-      console.log(result);
-      return result
     }
   },
 })
