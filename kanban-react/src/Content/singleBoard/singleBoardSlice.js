@@ -7,8 +7,8 @@ export const singleBoardSlice = createSlice({
     selectedBoard:(state,action) =>{
       const {payload} = action;
       const result = payload.array.find((it,ind)=>ind === payload.index)
-      localStorage.setItem('boardName',result)
-      return result
+      localStorage.setItem('boardName',result.name)
+      return result.name
     }
   },
 })

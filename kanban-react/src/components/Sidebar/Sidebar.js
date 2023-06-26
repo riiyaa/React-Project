@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
 import "./Sidebar.scss"
 import React from 'react'
 import logo from '../../assets/logo-mobile.svg'
@@ -13,6 +14,9 @@ function Sidebar() {
   const selectItem = (i) =>{
     dispatch(selectedBoard({index:i,array:boards}))
   }
+  useEffect(() => {
+  }, [])
+  
 
   return (
     <>
@@ -26,7 +30,7 @@ function Sidebar() {
           {boards.map((it, index) => {
             return <div onClick={()=>selectItem(index)} key={index} className={`cursor-pointer py-2 pl-8 pr-2 mr-5 my-2 bg-purple-400 background1 border-radius20 flex items-center ${(boards.findIndex((x)=>x==boardName) == index) ? 'active' : ''}`}>
                 <div className="px-4 py-1"><VscExtensions style={{ fontSize: "20px", color: "grey" }} className="svg-path fill-gray-600" /></div>
-                <div><h2 className="w-20 h-6 text-ellipsis overflow-hidden font-bold" key={index} >{it}</h2></div>
+                <div><h2 className="w-20 h-6 text-ellipsis overflow-hidden font-bold" key={index} >{it.name}</h2></div>
               </div>
           })}
       </div>  
