@@ -11,7 +11,7 @@ function Forms() {
   const  showModal  = useSelector((state) => state.showModal);
   const boards = useSelector(state => state.boards);
   const boardName = useSelector(state => state.singleBoard);
-  const columns = useSelector(state => state.boardColumns);
+  // const columns = useSelector(state => state.boardColumns);
   const closeRef = useRef();
 
   const [name, setName] = useState("");
@@ -30,16 +30,17 @@ function Forms() {
   const removeBoard = () => {
     if (name !== "") {
       dispatch(deleteBoard(name));
-      dispatch(isShowModal(''));
+      dispatch(isShowModal(''));  
       closeRef.current.click();
     }
   }
    const addInput = () =>{
-      setAdded(prev => [...prev, {colName:'ABC',task:[{title:'Title',content:'Content'}]}])
+      setAdded(prev => [...prev, 'ABC'])
    }
 
    const addValue = (ind,e) => {
-     added.splice(ind,1,e.target.value)
+    console.log(e.target.value,added,ind);
+     added.map((data)=>data.colName = e.targ432ret.value)
    }
 
    const saveInputs = () => {
@@ -52,9 +53,8 @@ function Forms() {
       setName('');
     }
     const i = boards.findIndex((elem ,ind) => elem.name == boardName)
-    console.log(boards[i]);
     setAdded(boards[i].columns)
-  }, [showModal])
+  }, [])
   
 
   return (
@@ -154,11 +154,10 @@ function Forms() {
                 return <div key={index} className="flex items-center justify-between gap-4 py-2">
                   <input
                     type="text"
-                    id="id"
                     placeholder="Board Name"
                     className="input border-slate-500 w-full flex-1 h-9 outline-none"
-                    value={add.colName}
-                    onChange={(e) => addValue(index,e)}
+                    defaultValue={add.colName}
+                    onChange={(event) => addValue(index,event)}
                   />
                   <label className="flex-01" > <VscClose className="text-2xl stroke-1" /></label>
                 </div>
