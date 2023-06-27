@@ -28,7 +28,7 @@ function Sidebar() {
         </div>
         <h2 className="font-bold py-4 px-8"> ALL BOARDS </h2>
           {boards.map((it, index) => {
-            return <div onClick={()=>selectItem(index)} key={index} className={`cursor-pointer py-2 pl-8 pr-2 mr-5 my-2 bg-purple-400 background1 border-radius20 flex items-center ${(boards.findIndex((x)=>x==boardName) == index) ? 'active' : ''}`}>
+            return <div onClick={()=>selectItem(index)} key={index} className={`cursor-pointer py-2 pl-8 pr-2 mr-5 my-2 bg-purple-400 background1 border-radius20 flex items-center ${(boards.findIndex((x)=>x.name==boardName) == index) ? 'active' : ''}`}>
                 <div className="px-4 py-1"><VscExtensions style={{ fontSize: "20px", color: "grey" }} className="svg-path fill-gray-600" /></div>
                 <div><h2 className="w-20 h-6 text-ellipsis overflow-hidden font-bold" key={index} >{it.name}</h2></div>
               </div>

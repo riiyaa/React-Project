@@ -35,11 +35,22 @@ export const boardSlice = createSlice({
     addBoardColumn : (state, action) =>{
       const {payload} = action
       const currentState = state
-      payload.array.map((data)=>{
-        currentState[payload.index].columns.push({colName:data,task:[{title:'Title',content:'Content'}]})
-      })
+      console.log(payload,current(currentState[payload.index]));
+      // payload.array.map((data)=>{
+        currentState[payload.index].columns = payload.array
+      // })
       localStorage.setItem('boards',JSON.stringify([...currentState]))
       return currentState
+    },
+    deleteBoardColumn : (state, action) =>{
+      const {payload} = action
+      state.map((res,ind)=>{
+        if(ind == payload.parentInd){
+          res.columns.splice(payload.index,1)
+        }
+      })
+      localStorage.setItem('boards',JSON.stringify([...state]))
+      return state
     }
   },
 })
@@ -49,4 +60,4 @@ export const boardSlice = createSlice({
 // Action creators are generated for each case reducer function
 
 export default boardSlice.reducer
-export const {addBoard, deleteBoard,addBoardColumn} = boardSlice.actions;
+export const {addBoard, deleteBoard,addBoardColumn,deleteBoardColumn} = boardSlice.actions;

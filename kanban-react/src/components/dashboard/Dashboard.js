@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import "./Dashboard.scss"
 import React from 'react'
 import Column from "../Column/Column";
-import Forms from "../Forms/Forms";
+
 
 function Dashboard() {
 
@@ -12,7 +12,9 @@ function Dashboard() {
     <div className=" bg-slate-200 h-full p-8">
         <h1 className="text-2xl font-bold mb-3">{boardName}</h1>
         <div className="flex items-center">
-            <Column />
+            { boardName != '' && (
+              <Column />
+            )}
         </div>
     </div>
   )

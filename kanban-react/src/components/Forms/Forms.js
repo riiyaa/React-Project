@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import "./Forms.scss";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addBoard,deleteBoard, addBoardColumn } from "../../Content/board/boardSlice";
+import { addBoard,deleteBoard, addBoardColumn, deleteBoardColumn } from "../../Content/board/boardSlice";
 import { isShowModal } from "../../Content/modal/modalSlice";
 import { VscClose } from "react-icons/vsc";
 
@@ -35,26 +35,40 @@ function Forms() {
     }
   }
    const addInput = () =>{
-      setAdded(prev => [...prev, 'ABC'])
+      setAdded(prev => [...prev, {colName:'ABC',task:[{title:'Title',content:'Content'}]}])
+   }
+
+   const deleteInput = (ind) =>{
+    const i = boards.findIndex((elem ,ind) => elem.name == boardName)
+    dispatch(deleteBoardColumn({parentInd:i,index:ind}))
+    setAdded(boards[i].columns.filter((res,i)=> i != ind))
    }
 
    const addValue = (ind,e) => {
-    console.log(e.target.value,added,ind);
-     added.map((data)=>data.colName = e.targ432ret.value)
+    //  added.map((data)=>data.colName = e.target.value)
+    // let cur = JSON.parse(JSON.stringify(added));
+    let cur = JSON.parse(JSON.stringify(added));
+    cur[ind].colName = e.target.value
+    setAdded(cur);
+    // setAdded(prev => prev.map((item, indexx) => indexx === ind ? {...item, colName: e.target.value} : item));
    }
 
    const saveInputs = () => {
     const colIndex = boards.findIndex((elem ,ind) => elem.name == boardName)
     dispatch(addBoardColumn({index:colIndex,array:added}))
+    dispatch(isShowModal(''));
    }
 
   useEffect(() => {
     if(showModal==='add'){
       setName('');
     }
-    const i = boards.findIndex((elem ,ind) => elem.name == boardName)
-    setAdded(boards[i].columns)
-  }, [])
+    if(showModal==='addColumn'){
+      const i = boards.findIndex((elem ,ind) => elem.name == boardName)
+      setAdded(boards[i]?.columns)
+      setName('');
+    }
+  }, [showModal])
   
 
   return (
@@ -150,7 +164,7 @@ function Forms() {
               <br/>
               <br/>
               <p className="font-bold text-slate-500">Board Columns</p>
-              { added.map((add,index) => {
+              { added?.map((add,index) => {
                 return <div key={index} className="flex items-center justify-between gap-4 py-2">
                   <input
                     type="text"
@@ -159,7 +173,7 @@ function Forms() {
                     defaultValue={add.colName}
                     onChange={(event) => addValue(index,event)}
                   />
-                  <label className="flex-01" > <VscClose className="text-2xl stroke-1" /></label>
+                  <label className=" py-1 px-3" onClick={()=>deleteInput(index)}> <VscClose className="text-2xl stroke-1 cursor-pointer" /></label>
                 </div>
               })
 
