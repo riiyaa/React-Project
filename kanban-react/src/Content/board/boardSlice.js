@@ -35,7 +35,7 @@ export const boardSlice = createSlice({
     addBoardColumn : (state, action) =>{
       const {payload} = action
       const currentState = state
-      console.log(payload,current(currentState[payload.index]));
+      console.log('abc',JSON.parse(JSON.stringify(state)),'payloadIndex',payload);
       // payload.array.map((data)=>{
         currentState[payload.index].columns = payload.array
       // })

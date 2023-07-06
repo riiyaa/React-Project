@@ -35,13 +35,18 @@ function Forms() {
     }
   }
    const addInput = () =>{
-      setAdded(prev => [...prev, {colName:'ABC',task:[{title:'Title',content:'Content'}]}])
-   }
+    setAdded(prev => [...prev, {colName:'ABC',task:[{title:'Title',content:'Content'}]}])
+    const colIndex = boards.findIndex((ele)=>ele.name == boardName)
+    dispatch(addBoardColumn({index:colIndex,array:added}))   
+  }
 
    const deleteInput = (ind) =>{
     const i = boards.findIndex((elem ,ind) => elem.name == boardName)
-    dispatch(deleteBoardColumn({parentInd:i,index:ind}))
-    setAdded(boards[i].columns.filter((res,i)=> i != ind))
+    console.log(added.filter((res,index)=> index != ind));
+    // dispatch(deleteBoardColumn({parentInd:i,index:ind}))
+    // setAdded(boards[i].columns.filter((res,i)=> i != ind))
+    setAdded(prev => prev.filter((res,index)=> index != ind))
+    console.log(added);
    }
 
    const addValue = (ind,e) => {
