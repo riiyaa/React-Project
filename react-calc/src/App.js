@@ -9,7 +9,8 @@ const [input, setInput] = useState({
   isOperator:false,
   operator:'',
   firstNum:0,
-  secondNum:0,
+  isEqual:false,
+  secondNum:0
 })
 
 const pressNum = (num,isNum) => {
@@ -18,17 +19,19 @@ const pressNum = (num,isNum) => {
     val = String(val) + num
     if(num=='.'){
       if(!input.first.includes('.')){
-        setInput(prev => ({...prev,first:val}))
+        setInput(prev => ({...prev,first:val,isEqual:false}))
       }else {return}
     }else{
-      if(input.isOperator){
+      if(input.isOperator && !input.isEqual){
         setInput(prev => ({...prev,first:num,isOperator:false }))
-      }else if(!input.isOperator){
+      }else if(!input.isOperator && !input.isEqual){
         if(input.first=='0'){
           setInput(prev => ({...prev,first:num}))
         }else{
           setInput(prev => ({...prev,first:val}))
         }
+      }else if(input.isEqual){
+        setInput(prev => ({...prev,first:num,second:'',isEqual:false}))
       }
     }
   }else{
@@ -36,24 +39,24 @@ const pressNum = (num,isNum) => {
     const val2 = structuredClone(input.first) + num
     if(!input.isOperator){
       if(input.firstNum == 0 && input.operator==''){
-        console.log('called');
         setInput(prev => ({...prev,second:val2,isOperator:true,operator:num,firstNum:val1}))
       }else{
-        console.log('called else');
         const fNum = Number(structuredClone(input.firstNum))
         const sNum = Number(structuredClone(input.first))
-        console.log('num',fNum,sNum,input.operator);
         if(input.operator=='+'){
-          setInput(prev => ({...prev,first:String(fNum+sNum),second:(fNum + sNum) + num,isOperator:true,operator:num,firstNum:fNum + sNum}))
+          setInput(prev => ({...prev,first:String(fNum+sNum),second:String(fNum + sNum) + num,isOperator:true,operator:num,firstNum:fNum + sNum}))
         }
         if(input.operator=='-'){
-          setInput(prev => ({...prev,first:String(fNum-sNum),second:(fNum - sNum) + num,isOperator:true,operator:num,firstNum:fNum - sNum}))
+          setInput(prev => ({...prev,first:String(fNum-sNum),second:String(fNum - sNum) + num,isOperator:true,operator:num,firstNum:fNum - sNum}))
         }
         if(input.operator=='×'){
-          setInput(prev => ({...prev,first:String(fNum*sNum),second:(fNum * sNum) + num,isOperator:true,operator:num,firstNum:fNum * sNum}))
+          setInput(prev => ({...prev,first:String(fNum*sNum),second:String(fNum * sNum) + num,isOperator:true,operator:num,firstNum:fNum * sNum}))
         }
         if(input.operator=='÷'){
-          setInput(prev => ({...prev,first:String(fNum/sNum),second:(fNum / sNum) + num,isOperator:true,operator:num,firstNum:fNum / sNum}))
+          setInput(prev => ({...prev,first:String(fNum/sNum),second:String(fNum / sNum) + num,isOperator:true,operator:num,firstNum:fNum / sNum}))
+        }
+        if(input.operator=='%'){
+          setInput(prev => ({...prev,first:String(fNum%sNum),second:String(fNum % sNum) + num,isOperator:true,operator:num,firstNum:fNum % sNum}))
         }
       }
     }else{
@@ -63,22 +66,73 @@ const pressNum = (num,isNum) => {
 }
 
 const equal = () => {
+  let ele = structuredClone(input)
+  const fNum = Number(structuredClone(input.firstNum))
+  const sNum = Number(structuredClone(input.first))
+  const tNum = Number(structuredClone(input.secondNum))
+  /// user press enter multiple times
   if(input.second.includes('=')){
-    
-  }else if(!input.second.includes('=') && input.operator!=''){
-    let ele = structuredClone(input)
-    // if(input.operator=='+'){
-    //   setInput(prev => ({...prev,first:String(fNum+sNum),second:(fNum + sNum) + num,isOperator:true,operator:num,firstNum:fNum + sNum}))
-    // }
-    // if(input.operator=='-'){
-    //   setInput(prev => ({...prev,first:String(fNum-sNum),second:(fNum - sNum) + num,isOperator:true,operator:num,firstNum:fNum - sNum}))
-    // }
-    // if(input.operator=='×'){
-    //   setInput(prev => ({...prev,first:String(fNum*sNum),second:(fNum * sNum) + num,isOperator:true,operator:num,firstNum:fNum * sNum}))
-    // }
-    // if(input.operator=='÷'){
-    //   setInput(prev => ({...prev,first:String(fNum/sNum),second:(fNum / sNum) + num,isOperator:true,operator:num,firstNum:fNum / sNum}))
-    // }
+
+    if(ele.operator=='+'){
+      setInput(prev => ({...prev,first:String(fNum+tNum),second:String(fNum)+' + '+String(tNum)+' =',isOperator:true,isEqual:true,operator:'+',firstNum:fNum + tNum,secondNum:String(tNum)}))
+    }
+    if(ele.operator=='-'){
+      setInput(prev => ({...prev,first:String(fNum-tNum),second:String(fNum)+' - '+String(tNum)+' =',isOperator:true,isEqual:true,operator:'-',firstNum:fNum - tNum,secondNum:String(tNum)}))
+    }
+    if(ele.operator=='×'){
+      setInput(prev => ({...prev,first:String(fNum*tNum),second:String(fNum)+' × '+String(tNum)+' =',isOperator:true,isEqual:true,operator:'×',firstNum:fNum * tNum,secondNum:String(tNum)}))
+    }
+    if(ele.operator=='÷'){
+      setInput(prev => ({...prev,first:String(fNum/tNum),second:String(fNum)+' ÷ '+String(tNum)+' =',isOperator:true,isEqual:true,operator:'÷',firstNum:fNum / tNum,secondNum:String(tNum)}))
+    }
+    if(ele.operator=='%'){
+      setInput(prev => ({...prev,first:String(fNum%tNum),second:String(fNum)+' % '+String(tNum)+' =',isOperator:true,isEqual:true,operator:'%',firstNum:fNum % tNum,secondNum:String(tNum)}))
+    }
+
+  }
+  //// user press enter first time
+  else if(!input.second.includes('=') && input.operator!=''){
+
+    if(ele.operator=='+'){
+      setInput(prev => ({...prev,first:String(fNum+sNum),second:String(fNum)+' + '+String(sNum)+' =',isOperator:true,isEqual:true,operator:'+',firstNum:fNum + sNum,secondNum:String(sNum)}))
+    }
+    if(ele.operator=='-'){
+      setInput(prev => ({...prev,first:String(fNum-sNum),second:String(fNum)+' - '+String(sNum)+' =',isOperator:true,isEqual:true,operator:'-',firstNum:fNum - sNum,secondNum:String(sNum)}))
+    }
+    if(ele.operator=='×'){
+      setInput(prev => ({...prev,first:String(fNum*sNum),second:String(fNum)+' × '+String(sNum)+' =',isOperator:true,isEqual:true,operator:'×',firstNum:fNum * sNum,secondNum:String(sNum)}))
+    }
+    if(ele.operator=='÷'){
+      setInput(prev => ({...prev,first:String(fNum/sNum),second:String(fNum)+' ÷ '+String(sNum)+' =',isOperator:true,isEqual:true,operator:'÷',firstNum:fNum / sNum,secondNum:String(sNum)}))
+    }
+    if(ele.operator=='%'){
+      setInput(prev => ({...prev,first:String(fNum%sNum),second:String(fNum)+' % '+String(sNum)+' =',isOperator:true,isEqual:true,operator:'%',firstNum:fNum % sNum,secondNum:String(sNum)}))
+    }
+
+  }
+}
+
+const backSpace = () =>{
+  if(input.first.length == 0){
+    setInput(prev => ({...prev , first:0}))
+  }else{
+    setInput(prev => ({...prev , first:input.first.slice(0,-1)}))
+  }
+}
+
+const clearAll = (bool) => {
+  if(bool){
+    setInput(prev => ({...prev, 
+    first:0,
+    second:'',
+    isOperator:false,
+    operator:'',
+    firstNum:0,
+    isEqual:false,
+    secondNum:0}))
+  }else{
+    setInput(prev => ({...prev, 
+      first:0}))
   }
 }
 
@@ -104,13 +158,13 @@ const equal = () => {
             <div className="space"></div>
             <div className="operator">
               <div className="first_line">
-                <button className="btn color" type="button">
+                <button className="btn color" type="button" onClick={()=> clearAll(false)}>
                   CE
                 </button>
-                <button className="btn color" type="button">
+                <button className="btn color" type="button" onClick={()=> clearAll(true)}>
                   C
                 </button>
-                <button className="btn color" type="button">
+                <button className="btn color" type="button" onClick={()=> backSpace()}>
                   ⌫
                 </button>
                 <button className="btn op color" type="button" onClick={()=> pressNum('÷',false)}>
