@@ -1,0 +1,23 @@
+h1,
+p {
+  font-family: Lato;
+}
+
+.navbar-brand {
+  display: inline-block;
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  line-height: inherit;
+  white-space: nowrap;
+}
+.content {
+  background: #ffff9e;
+  padding: 10px;
+}
+.content-wrap {
+  padding: 15px;
+  border: 1px solid #9b9b9b;
+  margin: 10px;
+}
